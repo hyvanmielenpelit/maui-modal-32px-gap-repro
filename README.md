@@ -7,7 +7,7 @@ On Windows, when a modal page is pushed via `Navigation.PushModalAsync()`, there
 ## How to Reproduce
 
 1. Open the solution in Visual Studio or run with `dotnet build -t:Run -f net10.0-windows10.0.19041.0`
-2. **Maximize the window** (or make it full-screen) — the bug is most visible in this mode
+2. The app will launch in **full-screen mode** automatically (via `AppWindowPresenterKind.FullScreen`)
 3. Click **"Push Modal Page"**
 4. Observe:
    - **BUG 1**: A blue strip (~32px) from the MainPage is visible at the very top of the window
