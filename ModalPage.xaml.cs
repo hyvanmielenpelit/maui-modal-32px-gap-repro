@@ -26,6 +26,7 @@ public partial class ModalPage : ContentPage
 
 /* Below is the suggested workaround/fix for the problem! Please uncomment it to try out! */
 
+/*
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -80,5 +81,5 @@ public partial class ModalPage : ContentPage
         }
     }
 #endif
-    
+*/    
 }
