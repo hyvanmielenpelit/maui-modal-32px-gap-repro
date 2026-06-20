@@ -26,42 +26,59 @@ public partial class ModalPage : ContentPage
 
 /* Below is the suggested workaround/fix for the problem! Please uncomment it to try out! */
 
-/*
         protected override void OnAppearing()
         {
             base.OnAppearing();
-    #if WINDOWS
+
+#if WINDOWS
             // Defer to ensure the platform visual tree is fully built
             Dispatcher.Dispatch(() =>
             {
                 FixModalTitleBarGap(this);
             });
-    #endif
+#endif
         }
-    #if WINDOWS
-    static void FixModalTitleBarGap(ContentPage modalPage)
-        {
-            var mauiContext = modalPage.Handler?.MauiContext;
-            if (mauiContext is null)
-                return;
-            // 1. Get the NavigationRootManager for this modal's scoped context
-            var navManager = mauiContext.Services.GetService(
-                typeof(Microsoft.Maui.Platform.NavigationRootManager));
-            if (navManager is not null)
-            {
-                // 2. Invoke internal void SetTitleBarVisibility(bool isVisible)
-                var method = navManager.GetType().GetMethod(
-                    "SetTitleBarVisibility", 
-                    BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 
-                if (method is not null)
+#if WINDOWS
+    static void FixModalTitleBarGap(ContentPage modalPage)
+    {
+        var mauiContext = modalPage.Handler?.MauiContext;
+        if (mauiContext is null)
+            return;
+        // 1. Get the NavigationRootManager for this modal's scoped context
+        var navManager = mauiContext.Services.GetService(
+            typeof(Microsoft.Maui.Platform.NavigationRootManager));
+        if (navManager is not null)
+        {
+            var window = modalPage.GetParentWindow()?.Handler?.PlatformView as Microsoft.UI.Xaml.Window;
+            if (window is not null)
+            {
+                var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
+                var windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hwnd);
+                var appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(windowId);
+
+                // ONLY apply the fix in full-screen mode. In windowed mode, the 32px 
+                // reservation is required to avoid overlapping the OS window controls 
+                // and to preserve the window drag region.
+                if (appWindow?.Presenter?.Kind == Microsoft.UI.Windowing.AppWindowPresenterKind.FullScreen)
                 {
-                    // Passing false tells it to collapse the title bar, zero the 32px margin,
-                    // and clear the unclickable non-client input regions.
-                    method.Invoke(navManager, new object[] { false });
+                    // 2. Invoke internal void SetTitleBarVisibility(bool isVisible)
+                    var method = navManager.GetType().GetMethod(
+                        "SetTitleBarVisibility", 
+                        System.Reflection.BindingFlags.Instance | 
+                        System.Reflection.BindingFlags.NonPublic | 
+                        System.Reflection.BindingFlags.Public);
+
+                    if (method is not null)
+                    {
+                        // Passing false tells it to collapse the title bar, zero the 32px margin,
+                        // and clear the unclickable non-client input regions.
+                        method.Invoke(navManager, new object[] { false });
+                    }
                 }
             }
         }
+    }
 #endif
-*/
+    
 }
