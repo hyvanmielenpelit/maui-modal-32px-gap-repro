@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ModalBugRepro.MainPage"
+             BackgroundColor="#0055FF">
+
+    <!-- 
+        BUG REPRODUCTION: This page has a bright blue background.
+        When the modal page (red) is pushed on top, you will see a 
+        blue strip at the very top of the window — that's the bug.
+    -->
+
+    <VerticalStackLayout Spacing="25" VerticalOptions="Center" Padding="30,0">
+        <Label Text="Main Page (Blue)"
+               FontSize="32"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               TextColor="White" />
+
+        <Label Text="This page has a bright blue background.&#10;When you push the modal, look for a blue strip at the top of the window."
+               FontSize="16"
+               HorizontalOptions="Center"
+               HorizontalTextAlignment="Center"
+               TextColor="White" />
+
+        <Button Text="Push Modal Page"
+                Clicked="OnPushModalClicked"
+                HorizontalOptions="Center"
+                BackgroundColor="White"
+                TextColor="#0055FF"
+                FontSize="18"
+                FontAttributes="Bold"
+                Padding="20,10" />
+    </VerticalStackLayout>
+
+</ContentPage>

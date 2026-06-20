@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ModalBugRepro.ModalPage"
+             BackgroundColor="#DD0000">
+
+    <!-- 
+        BUG REPRODUCTION: This modal page has a red background.
+        
+        BUG 1 - VISUAL GAP: 
+        A ~32px blue strip from the MainPage is visible at the very 
+        top of the window. The red modal does not cover the full window.
+        
+        BUG 2 - UNCLICKABLE AREA:
+        The button at the top of this page ("Try clicking me!") is 
+        positioned near the top. In the area close to the top edge,
+        mouse clicks are intercepted by the OS title bar non-client 
+        region and do not reach the button.
+    -->
+
+    <Grid RowDefinitions="Auto,*,Auto" Padding="0">
+
+        <!-- Button at the very top to demonstrate the unclickable area -->
+        <Button Text="⬆ Try clicking me! Clicks near the top edge won't register ⬆"
+                Grid.Row="0"
+                Clicked="OnTopButtonClicked"
+                BackgroundColor="#FFCC00"
+                TextColor="Black"
+                FontSize="14"
+                FontAttributes="Bold"
+                CornerRadius="0"
+                Margin="0"
+                HorizontalOptions="Fill" />
+
+        <!-- Main content -->
+        <VerticalStackLayout Grid.Row="1" Spacing="20" VerticalOptions="Center" Padding="30,0">
+            <Label Text="Modal Page (Red)"
+                   FontSize="32"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   TextColor="White" />
+
+            <Border BackgroundColor="#AA0000" Stroke="Transparent" Padding="20" StrokeShape="RoundRectangle 10">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="🐛 BUG 1 — Visual Gap"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                    <Label Text="Look at the very top of the window. You should see a blue strip (~32 pixels) from the MainPage showing through. The modal page does not cover the full window."
+                           FontSize="14"
+                           TextColor="White" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border BackgroundColor="#AA0000" Stroke="Transparent" Padding="20" StrokeShape="RoundRectangle 10">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="🐛 BUG 2 — Unclickable Area"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                    <Label Text="The yellow button at the very top of this page says 'Try clicking me!' — try clicking it near the top edge of the window. Mouse clicks in that ~32px region are intercepted by the OS-level title bar and do not reach the button."
+                           FontSize="14"
+                           TextColor="White" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border BackgroundColor="#AA0000" Stroke="Transparent" Padding="20" StrokeShape="RoundRectangle 10">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="ℹ️ Click Counter"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                    <Label x:Name="ClickCountLabel"
+                           Text="Top button clicked: 0 times"
+                           FontSize="16"
+                           TextColor="White" />
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+
+        <!-- Pop modal button at the bottom -->
+        <Button Text="Pop Modal (Go Back)"
+                Grid.Row="2"
+                Clicked="OnPopModalClicked"
+                BackgroundColor="White"
+                TextColor="#DD0000"
+                FontSize="18"
+                FontAttributes="Bold"
+                Margin="30,0,30,30"
+                Padding="20,10"
+                HorizontalOptions="Fill" />
+    </Grid>
+
+</ContentPage>
