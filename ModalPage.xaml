@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ModalBugRepro.ModalPage"
-             BackgroundColor="#DD0000">
+             BackgroundColor="#DD0000"
+             >
 
     <!-- 
         BUG REPRODUCTION: This modal page has a red background.
@@ -11,17 +12,17 @@
         A ~32px blue strip from the MainPage is visible at the very 
         top of the window. The red modal does not cover the full window.
         
-        BUG 2 - UNCLICKABLE AREA:
-        The button at the top of this page ("Try clicking me!") is 
-        positioned near the top. In the area close to the top edge,
-        mouse clicks are intercepted by the OS title bar non-client 
-        region and do not reach the button.
+        BUG 2 - SMALL UNCLICKABLE AREA:
+        If you put Margin="0,-32,0,0" to the first grid on the page, it
+        will cover the area, but small area in the middle of the covered
+        area is unclickable and doesn't increase the click count.
     -->
 
+    
     <Grid RowDefinitions="Auto,*,Auto" Padding="0">
-
+        <!-- Margin="0,-32,0,0" -->
         <!-- Button at the very top to demonstrate the unclickable area -->
-        <Button Text="⬆ Try clicking me! Clicks near the top edge won't register ⬆"
+        <Button Text="Try clicking me ! Also please note ⬆ the transparent error area ⬆ above me!"
                 Grid.Row="0"
                 Clicked="OnTopButtonClicked"
                 BackgroundColor="#FFCC00"
@@ -46,7 +47,7 @@
                            FontSize="20"
                            FontAttributes="Bold"
                            TextColor="White" />
-                    <Label Text="Look at the very top of the window. You should see a blue strip (~32 pixels) from the MainPage showing through. The modal page does not cover the full window."
+                    <Label Text="Look at the very top of the window. You should see a blue strip (~32 pixels) from the MainPage showing through. The modal page does not cover the full window. You can fix it with a workaround in ModalPage.xaml.cs."
                            FontSize="14"
                            TextColor="White" />
                 </VerticalStackLayout>
@@ -54,11 +55,11 @@
 
             <Border BackgroundColor="#AA0000" Stroke="Transparent" Padding="20" StrokeShape="RoundRectangle 10">
                 <VerticalStackLayout Spacing="10">
-                    <Label Text="🐛 BUG 2 — Unclickable Area"
+                    <Label Text="🐛 BUG 2 — Small Unclickable Area"
                            FontSize="20"
                            FontAttributes="Bold"
                            TextColor="White" />
-                    <Label Text="The yellow button at the very top of this page says 'Try clicking me!' — try clicking it near the top edge of the window. Mouse clicks in that ~32px region are intercepted by the OS-level title bar and do not reach the button."
+                    <Label Text="If you try to fix the problem with another workaround instead, namely, putting Margin 0,-32,0,0 in the first grid, it will indeed cover the transparent area, but a small strip in the covered area will be unclickable and doesn't increase the click count. You can ignore this workaround and problem for now, because the workaround in ModalPage.xaml.cs is a good fix."
                            FontSize="14"
                            TextColor="White" />
                 </VerticalStackLayout>
